@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing V2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      text-align: center;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      width: 400px;
+    }
+
+    .keyboard-img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .btn-start {
+      padding: 0.75rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-start:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-start:active {
+      transform: scale(0.98);
+    }
+
+    .status-msg {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #d9534f;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="assets/keyboard.png" alt="鍵盤圖片" class="keyboard-img">
+    <br>
+    <button id="startBtn" class="btn-start">開始</button>
+    <p id="statusMsg" class="status-msg"></p>
+  </div>
+
+  <audio id="beepAudio" src="assets/beep.wav" preload="auto"></audio>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const beepAudio = document.getElementById('beepAudio');
+    const statusMsg = document.getElementById('statusMsg');
+
+    // 檢查音效檔案是否能成功載入
+    beepAudio.addEventListener('error', () => {
+      statusMsg.innerText = "無法載入 assets/beep.wav，請檢查檔案名稱與路徑！";
+    });
+
+    startBtn.addEventListener('click', () => {
+      statusMsg.innerText = ""; // 清空訊息
+      
+      // 重設播放時間
+      beepAudio.currentTime = 0;
+      
+      const playPromise = beepAudio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log("音效播放成功");
+        }).catch(error => {
+          console.error("播放失敗:", error);
+          statusMsg.innerText = "瀏覽器阻擋播放或檔案異常，請點擊頁面任意處後再試一次。";
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
